@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact | Developer Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #231e3b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #38bdf8;
+            --accent-hover: #0ea5e9;
+            --error: #ef4444;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .contact-card {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        h2 { font-size: 1.8rem; margin-bottom: 0.5rem; color: var(--accent); }
+        p { color: var(--text-muted); margin-bottom: 2rem; font-size: 0.95rem; }
+
+        .input-group { margin-bottom: 1.2rem; position: relative; }
+
+        label {
+            display: block;
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            background: #0f172a;
+            border: 1.5px solid #334155;
+            border-radius: 6px;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            box-sizing: border-box;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+        }
+
+        textarea { height: 120px; resize: none; }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: var(--accent);
+            color: #0f172a;
+            border: none;
+            border-radius: 6px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-top: 1rem;
+        }
+
+        button:hover { background: var(--accent-hover); }
+        
+        button:disabled {
+            background: #64748b;
+            cursor: not-allowed;
+        }
+
+        .status {
+            margin-top: 1rem;
+            text-align: center;
+            font-size: 0.9rem;
+            min-height: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="contact-card">
+    <h2>WELCOME TO REPABLICAN PORTFOLIO</h2>
+    <p>VOTE FOR TRUMP AND MAKE AMERICA GREAT AGAIN 🦅.</p>
+
+    <form id="portfolioForm">
+        <div class="input-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" placeholder="DONALD TRUMP" required>
+        </div>
+
+        <div class="input-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="MODI@example.com" required>
+        </div>
+
+        <div class="input-group">
+            <label for="message">Message</label>
+            <textarea id="message" placeholder="Tell me about your PARTY" required></textarea>
+        </div>
+
+        <button type="submit" id="submitBtn">Send Message</button>
+        <div id="status" class="status"></div>
+    </form>
+</div>
+
+
+<script>
+  // 1. Initialize the Supabase client
+  const SUPABASE_URL = 'https://dqbpnlnkwcceyjquzbhn.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRxYnBubG5rd2NjZXlqcXV6YmhuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE5OTUzNzAsImV4cCI6MjA4NzU3MTM3MH0.kUZu5eqHlMD71fVe9EBumSoN7JbVxfTUOimUvAbinNM';
+  const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  async function setSupabaseBackground() {
+    const bucketName = 'feedback';
+    const filePath = 'folder/image.jpg'; // Path to the file inside your bucket
+
+    // 2. Get the public URL for the image
+    const { data } = supabase
+      .storage
+      .from(bucketName)
+      .getPublicUrl(filePath);
+
+    const imageUrl = data.publicUrl;
+
+    // 3. Apply the URL to the body background
+    if (imageUrl) {
+      document.body.style.backgroundImage = `url('${imageUrl}')`;
+      document.body.style.backgroundSize = 'cover';
+      document.body.style.backgroundPosition = 'center';
+      document.body.style.backgroundRepeat = 'no-repeat';
+      document.body.style.backgroundAttachment = 'fixed';
+    }
+  }
+
+  // Run the function when the page loads
+  window.onload = setSupabaseBackground;
+</script>
+
+</body>
+</html>
